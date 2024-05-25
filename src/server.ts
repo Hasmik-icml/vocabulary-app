@@ -11,18 +11,14 @@ const startServer = async () => {
     const port = 3000;
 
     // Middleware
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(express.static('src/public'));
 
     app.post('/api/create-new-words', async (req: Request, res: Response) => {
-        console.log(3333);
-        
         const { newWord, translation } = req.body;
-        console.log( { newWord, translation } );
-        
-        const wordRepo = prisma.words;
+        const wordsRepo = prisma.words;
 
-        const wordCreated: Words = await wordRepo.create({
+        const wordCreated: Words = await wordsRepo.create({
             data: {
                 english: newWord,
                 armenian: translation
@@ -33,9 +29,14 @@ const startServer = async () => {
     });
 
     // Random words endpoint
-    const words = ["apple", "banana", "orange", "pear", "grape", "melon", "kiwi", "plum", "peach", "berry"];
-    app.get('/api/words', (req, res) => {
-        const randomWords = words.sort(() => 0.5 - Math.random()).slice(0, 10);
+    app.get('/api/words', async (req: Request, res: Response) => {
+        const wordsRepo = prisma.words;
+        const limit: number = 10;
+        const words = await wordsRepo.findMany({
+            take: limit,
+        });
+        const randomWords = words.sort(() => 0.5 - Math.random());
+        console.log({ randomWords })
         res.json(randomWords);
     });
 

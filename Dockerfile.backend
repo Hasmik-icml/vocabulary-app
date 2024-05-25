@@ -13,12 +13,17 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Install Prisma CLI
+RUN npm install prisma
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Install PostgreSQL client tools
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Copy the Prisma schema file
 COPY prisma/schema.prisma ./prisma/schema.prisma
-# COPY prisma ./prisma/
-
-# Install Prisma and generate client
-RUN npm install prisma && npx prisma generate
 
 # # Push the Prisma schema to the database
 # RUN npx prisma db push
@@ -31,6 +36,8 @@ RUN npm install prisma && npx prisma generate
 EXPOSE 3000
 
 # Start the application
-# CMD ["bash", "-c", "npm run migrate && npm run start"] 
+# CMD ["bash", "-c", "npx prisma migrate deploy init && npm run start"]
+
+CMD ["bash", "-c", "npm run migrate && npm run start"] 
 # CMD ["npm", "start"] 
-CMD ["sh", "-c", "npm run dev"]
+# CMD ["sh", "-c", "npm run dev"]

@@ -10,19 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchWords() {
         const response = await fetch('/api/words');
-        const words = await response.json();
-        console.log(words)
-        wordsList.innerHTML = words.map(word => `
+        const randomWords = await response.json();
+        wordsList.innerHTML = randomWords.map(word => `
             <div>
-                <span>${word}</span>
-                <input type="text" data-word="${word}" placeholder="Translate">
+                <span>${word.english}</span>
+                <input type="text" data-word="${word.english}" placeholder="Translate">
                 <button class="check-word">Check</button>
             </div>
         `).join('');
     }
 
     async function createNewWords() {
-        console.log(12111);
         const newWord = newWordInput.value;
         const translation = translateInput.value;
 
