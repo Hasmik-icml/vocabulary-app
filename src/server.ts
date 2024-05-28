@@ -1,11 +1,11 @@
 import express from 'express';
 import { Request, Response } from "express";
-import bodyParser from 'body-parser';
-import { PrismaClient, Words } from '@prisma/client';
+import { PrismaClient, Vocabulary } from '@prisma/client';
 
 const startServer = async () => {
     const prisma = new PrismaClient();
-    await prisma.$connect();
+    // await prisma.$connect();
+    console.log("11111");
 
     const app = express();
     const port = 3000;
@@ -16,9 +16,9 @@ const startServer = async () => {
 
     app.post('/api/create-new-words', async (req: Request, res: Response) => {
         const { newWord, translation } = req.body;
-        const wordsRepo = prisma.words;
-
-        const wordCreated: Words = await wordsRepo.create({
+        const wordsRepo = prisma.vocabulary;
+        console.log("newWord", newWord);
+        const wordCreated: Vocabulary = await wordsRepo.create({
             data: {
                 english: newWord,
                 armenian: translation
@@ -30,7 +30,7 @@ const startServer = async () => {
 
     // Random words endpoint
     app.get('/api/words', async (req: Request, res: Response) => {
-        const wordsRepo = prisma.words;
+        const wordsRepo = prisma.vocabulary;
         const limit: number = 10;
         const words = await wordsRepo.findMany({
             take: limit,

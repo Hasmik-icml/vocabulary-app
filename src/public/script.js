@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const newWordInput = document.getElementById('newWordInput');
     const translateInput = document.getElementById('translateInput');
     const resetButton = document.getElementById('reset');
-    console.log(showWordsButton)
 
     async function fetchWords() {
         const response = await fetch('/api/words');
@@ -22,9 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function createNewWords() {
         const newWord = newWordInput.value;
-        const translation = translateInput.value;
-
-        if (newWord.trim() === "" || translation.trim() === "") {
+        const translation = String(translateInput.value).split(',');
+        if (newWord.trim() === "" || !translation,length) {
             alert("Please enter both a word and its translation.");
             return;
         }
