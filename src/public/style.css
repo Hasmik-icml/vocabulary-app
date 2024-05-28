@@ -68,3 +68,12 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+.tools {
+    font-size: 25px;
+    cursor: pointer;
+    color: chocolate;
+    font-weight: 900;
+    width: 200px;
+    background: border-box;
+}
