@@ -11,27 +11,15 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY . .
-
-# Install Prisma CLI
 RUN npm install prisma
 
-# Generate Prisma client
+COPY prisma/ ./prisma
+
 RUN npx prisma generate
 
-# Install PostgreSQL client tools
-RUN apt-get update && apt-get install -y postgresql-client
+COPY . .
 
-# Copy the Prisma schema file
-COPY prisma/schema.prisma ./prisma/schema.prisma
-
-# # Push the Prisma schema to the database
-# RUN npx prisma db push
-
-
-# Build the TypeScript code
-# RUN npx tsc
-
+# RUN apt-get update && apt-get install -y postgresql-client
 # Expose the port the app runs on
 EXPOSE 3000
 

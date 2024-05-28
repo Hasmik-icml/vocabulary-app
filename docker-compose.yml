@@ -11,13 +11,14 @@ services:
     env_file:
       - .env
     environment:
-      NODE_ENV: development
+      # NODE_ENV: development
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - db
     volumes:
       - .:/app
       - /app/node_modules
+    # command: tail -f /dev/null
 
   frontend:
     restart: always
@@ -33,7 +34,7 @@ services:
 
   db:
     image: postgres:13
-    container_name: postgres
+    container_name: db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
