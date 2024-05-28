@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newWordsButton = document.getElementById('new-word');
     const newWordInput = document.getElementById('newWordInput');
     const translateInput = document.getElementById('translateInput');
+    const transcriptionInput = document.getElementById("transcriptionInput");
     const resetButton = document.getElementById('reset');
 
     async function fetchWords() {
@@ -22,7 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     async function createNewWords() {
         const newWord = newWordInput.value;
         const translation = String(translateInput.value).split(',');
-        if (newWord.trim() === "" || !translation,length) {
+        const transcription = transcriptionInput.value;
+        console.log("transcription", transcription);
+
+        if (newWord.trim() === "" || !translation.length) {
             alert("Please enter both a word and its translation.");
             return;
         }
@@ -32,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ newWord, translation: translation })
+                body: JSON.stringify({ newWord, translation, transcription })
             });
 
             if (!response.ok) {
@@ -45,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Clear the input fields
             newWordInput.value = "";
             translateInput.value = "";
+            transcriptionInput.value = "";
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
