@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary App</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="app">
+        <header>
+            <h1>Personal Vocabulary</h1>
+            <nav>
+                <div id="new-word-container">
+                    <input type="text" id="newWordInput" class="styled-input" placeholder="Enter a new word">
+                    <input type="text" id="translateInput" class="styled-input" placeholder="Enter a translate">
+                    <input type="text" id="transcriptionInput" class="styled-input" placeholder="Enter a transcription">
+
+                    <button id="new-word" class="tools">Add New</button>
+                </div>
+                <div class="tool-buttons">
+                    <button id="show-words" class="tools">&#x21bb;</button>
+                    <button id="reset" class="tools">Reset</button>
+                    <button class="check-word">Check</button>
+                </div>
+            </nav>
+        </header>
         <div id="words-list"></div>
-        <div id="check-results"></div>
-        <button id="show-words" class="tools">&#x21bb;</button>
-        <button id="reset" class="tools">Reset</button>
-
-        <div id="new-word-container">
-            <input type="text" id="newWordInput"  class="styled-input" placeholder="Enter a new word">
-            <input type="text" id="translateInput"  class="styled-input" placeholder="Enter a translate">
-            <input type="text" id="transcriptionInput"  class="styled-input" placeholder="Enter a transcription">
-
-            <button id="new-word">Add New</button>
-        </div>
-
     </div>
-    
+
     <script src="script.js"></script>
 </body>
+
 </html>

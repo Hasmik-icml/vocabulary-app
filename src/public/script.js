@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const transcriptionInput = document.getElementById("transcriptionInput");
     const resetButton = document.getElementById('reset');
 
+    // Render words fetched from db
     async function fetchWords() {
         const response = await fetch('/api/words');
         const randomWords = await response.json();
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
                 <span>${word.english}</span>
                 <input type="text" class="translate" data-word="${word.english}" placeholder="Translate">
-                <button class="check-word">Check</button>
             </div>
         `).join('');
     }
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = event.target.closest('div');
             const word = div.querySelector('span').innerText;
             const translation = div.querySelector('input').value;
+
             const response = await fetch('/api/check', {
                 method: 'POST',
                 headers: {
@@ -71,7 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ word, translation })
             });
+
             const result = await response.json();
+
             checkResults.innerHTML = `
                 <p>${result.word} - ${result.translation}: ${result.correct ? 'Correct' : 'Incorrect'}</p>
             `;
