@@ -15,16 +15,18 @@ const startServer = async () => {
     app.use(express.static('src/public'));
 
     app.post('/api/create-new-words', async (req: Request, res: Response) => {
-        const { newWord, translation } = req.body;
+        const { newWord, translation, transcription } = req.body;
         const wordsRepo = prisma.vocabulary;
-        console.log("newWord", newWord);
+
         const wordCreated: Vocabulary = await wordsRepo.create({
             data: {
                 english: newWord,
-                armenian: translation
+                armenian: translation,
+                transcription,
             }
         });
-
+        console.log("wordCreated ", wordCreated);
+        
         res.status(200).send({ wordCreated });
     });
 
