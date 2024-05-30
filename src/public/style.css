@@ -47,13 +47,13 @@ body {
 }
 
 #words-list > div > span {
-    width: 100px; /* Ամեն բառի համար բավարար լայնություն */
+    width: 300px; /* Ամեն բառի համար բավարար լայնություն */
     text-align: right;
     margin-right: 10px;
 }
 
 #words-list > div > input {
-    width: 200px;
+    width: 400px;
     font-size: 20px;
     margin-right: 10px;
 }
@@ -76,4 +76,19 @@ button {
     font-weight: 900;
     width: 200px;
     background: border-box;
+}
+
+.check-word{
+    font-size: 20px;
+    cursor: pointer;
+    color: chocolate;
+    font-weight: 900;
+    background: border-box;
+}
+
+::placeholder {
+    color: brown;
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    opacity: 0.4;
 }
