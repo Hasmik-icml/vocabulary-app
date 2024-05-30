@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wordsList.innerHTML = randomWords.map(word => `
             <div>
                 <span>${word.english}</span>
-                <input type="text" data-word="${word.english}" placeholder="Translate">
+                <input type="text" class="translate" data-word="${word.english}" placeholder="Translate">
                 <button class="check-word">Check</button>
             </div>
         `).join('');
@@ -79,8 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     resetButton.addEventListener('click', () => {
-        wordsList.innerHTML = '';
-        checkResults.innerHTML = '';
+        const translateList = document.getElementsByClassName("translate");
+        for (let i = 0; i < translateList.length; i++) {
+            translateList[i].value = "";
+          }
     });
 
     // Initial fetch of words
