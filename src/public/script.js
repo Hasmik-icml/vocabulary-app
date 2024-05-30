@@ -2,11 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordsList = document.getElementById('words-list');
     const checkResults = document.getElementById('check-results');
     const showWordsButton = document.getElementById('show-words');
+    const resetButton = document.getElementById('reset');
+    const switchButton = document.getElementById('switch-language');
     const newWordsButton = document.getElementById('new-word');
     const newWordInput = document.getElementById('newWordInput');
     const translateInput = document.getElementById('translateInput');
     const transcriptionInput = document.getElementById("transcriptionInput");
-    const resetButton = document.getElementById('reset');
+    
 
     // Render words fetched from db
     async function fetchWords() {
@@ -87,6 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
             translateList[i].value = "";
           }
     });
+
+    switchButton.addEventListener('click', (e) => {
+        const buttonText = (e.target.innerHTML).split('⇄');
+        const updatedText = `${buttonText[1].trim()} ⇄ ${buttonText[0].trim()}`
+        switchButton.innerText = updatedText;
+    })
 
     // Initial fetch of words
     fetchWords();
