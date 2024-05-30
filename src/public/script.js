@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wordsList = document.getElementById('words-list');
     const checkResults = document.getElementById('check-results');
-    const showWordsButton = document.getElementById('show-words');
+    const refreshWordsButton = document.getElementById('refresh-words');
     const resetButton = document.getElementById('reset');
     const switchButton = document.getElementById('switch-language');
     const newWordsButton = document.getElementById('new-word');
@@ -12,12 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render words fetched from db
     async function fetchWords() {
+        const switchLanguage = switchButton.innerText.split('⇄')[0].trim();
+        console.log(switchLanguage)
         const response = await fetch('/api/words');
         const randomWords = await response.json();
         wordsList.innerHTML = randomWords.map(word => `
+
             <div>
-                <span>${word.english}</span>
-                <input type="text" class="translate" data-word="${word.english}" placeholder="Translate">
+                <span>${switchLanguage === 'English' ? word.english : word.armenian}</span>
+                <input type="text" class="translate" data-word="${switchLanguage === 'English' ? word.english : word.armenian}" placeholder="Translate">
             </div>
         `).join('');
     }
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     newWordsButton.addEventListener('click', createNewWords);
-    showWordsButton.addEventListener('click', fetchWords);
+    refreshWordsButton.addEventListener('click', fetchWords);
 
     wordsList.addEventListener('click', async (event) => {
         if (event.target.classList.contains('check-word')) {
@@ -92,8 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switchButton.addEventListener('click', (e) => {
         const buttonText = (e.target.innerHTML).split('⇄');
-        const updatedText = `${buttonText[1].trim()} ⇄ ${buttonText[0].trim()}`
-        switchButton.innerText = updatedText;
+        const switchLanguage = `${buttonText[1].trim()} ⇄ ${buttonText[0].trim()}`
+        switchButton.innerText = switchLanguage;
+        fetchWords();
     })
 
     // Initial fetch of words
