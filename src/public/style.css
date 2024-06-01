@@ -52,7 +52,7 @@ header>h1 {
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 20px;
-    margin-top: 30px;
+    margin-top: 15px;
     color: aliceblue;
 }
 
@@ -67,10 +67,18 @@ header>h1 {
     font-size: 24px;
 }
 
+#words-list>div>span.transcription {
+    font-size: 15px;
+}
+
 #words-list>div>input {
-    width: 400px;
+    width: 600px;
     font-size: 24px;
     margin-right: 10px;
+    color: aliceblue;
+    /* border: none; */
+    background-color: transparent;
+    outline: none;
 }
 
 #check-results {
@@ -101,7 +109,7 @@ button {
 }
 
 ::placeholder {
-    color: brown;
+    color: rgb(161, 156, 156);
     font-size: 20px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     opacity: 0.4;

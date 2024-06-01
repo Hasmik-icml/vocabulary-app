@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
                 <span id=${word.id}>${switchLanguage === 'English' ? word.english : word.armenian}</span>
                 <input id=${word.id} type="text" class="translate" data-word="${switchLanguage === 'English' ? word.english : word.armenian}" placeholder="Translate">
+                <span class="transcription">${word.transcription}</span>
             </div>
         `).join('');
     }
