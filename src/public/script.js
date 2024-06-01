@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const wordsList = document.getElementById('words-list');
-    const checkResults = document.getElementById('check-results');
+    const checkResults = document.getElementById('check-word');
     const refreshWordsButton = document.getElementById('refresh-words');
     const resetButton = document.getElementById('reset');
     const switchButton = document.getElementById('switch-language');
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newWordInput = document.getElementById('newWordInput');
     const translateInput = document.getElementById('translateInput');
     const transcriptionInput = document.getElementById("transcriptionInput");
-    
+
 
     // Render words fetched from db
     async function fetchWords() {
@@ -17,10 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch('/api/words');
         const randomWords = await response.json();
         wordsList.innerHTML = randomWords.map(word => `
-
             <div>
-                <span>${switchLanguage === 'English' ? word.english : word.armenian}</span>
-                <input type="text" class="translate" data-word="${switchLanguage === 'English' ? word.english : word.armenian}" placeholder="Translate">
+                <span id=${word.id}>${switchLanguage === 'English' ? word.english : word.armenian}</span>
+                <input id=${word.id} type="text" class="translate" data-word="${switchLanguage === 'English' ? word.english : word.armenian}" placeholder="Translate">
             </div>
         `).join('');
     }
@@ -64,33 +63,50 @@ document.addEventListener('DOMContentLoaded', () => {
     newWordsButton.addEventListener('click', createNewWords);
     refreshWordsButton.addEventListener('click', fetchWords);
 
-    wordsList.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('check-word')) {
-            const div = event.target.closest('div');
-            const word = div.querySelector('span').innerText;
-            const translation = div.querySelector('input').value;
+    checkResults.addEventListener('click', async (event) => {
+        const translateTo = switchButton.innerText.split('⇄')[1].trim();
+        const wordList = wordsList.querySelectorAll("span");
+        const translationList = wordsList.querySelectorAll("input");
+        const checkListObject = {};
 
-            const response = await fetch('/api/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ word, translation })
-            });
+        for (let i = 0; i < translationList.length; i++) {
+            const translation = translationList[i].value;
+            const wordId = translationList[i].id;
 
-            const result = await response.json();
-
-            checkResults.innerHTML = `
-                <p>${result.word} - ${result.translation}: ${result.correct ? 'Correct' : 'Incorrect'}</p>
-            `;
+            checkListObject[wordId] = { translation };
         }
+
+        console.log(checkListObject);
+        const response = await fetch('/api/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ checkListObject, translateTo }),
+        });
+
+        const result = await response.json();
+        result.forEach(element => {
+            const wordElement = document.getElementById(element.id);
+            console.log("11", wordElement);
+            wordElement.innerHTML = wordElement.innerHTML.replace(" &#x2713;", "").replace(" &#x2715;", "");
+
+            if (element.match) {
+                wordElement.innerHTML += " &#x2713;";
+                wordElement.classList.add("correct");
+            } else {
+                wordElement.innerHTML += " &#x2715;";
+                wordElement.classList.add("incorrect");
+            }
+        });
+        console.log("result", result);
     });
 
     resetButton.addEventListener('click', () => {
         const translateList = document.getElementsByClassName("translate");
         for (let i = 0; i < translateList.length; i++) {
             translateList[i].value = "";
-          }
+        }
     });
 
     switchButton.addEventListener('click', (e) => {

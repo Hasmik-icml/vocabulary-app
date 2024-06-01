@@ -25,8 +25,6 @@ const startServer = async () => {
                 transcription,
             }
         });
-        console.log("wordCreated ", wordCreated);
-        
         res.status(200).send({ wordCreated });
     });
 
@@ -38,15 +36,31 @@ const startServer = async () => {
             take: limit,
         });
         const randomWords = words.sort(() => 0.5 - Math.random());
-        console.log({ randomWords })
         res.json(randomWords);
     });
 
     // Check endpoint
-    app.post('/api/check', (req, res) => {
-        const { word, translation } = req.body;
-        // Add your logic for checking here
-        res.json({ word, translation, correct: true });
+    app.post('/api/check', async (req: Request, res: Response) => {
+        const { checkListObject, translateTo } = req.body;
+        const wordsRepo = prisma.vocabulary;
+        console.log("checkListObject", checkListObject, translateTo);
+        const wordIds = Object.keys(checkListObject).map(Number);
+
+        const checkList = await wordsRepo.findMany({
+            where: { id: { in: wordIds } }
+        });
+
+        const result = checkList.map(word => {
+            const providedTranslation = checkListObject[word.id].translation;
+            return {
+                id: word.id,
+                english: word.english,
+                armenian: word.armenian,
+                providedTranslation,
+                match: translateTo === "Armenian" ? word.armenian.includes(providedTranslation) : word.english === providedTranslation,
+            }
+        });
+        res.json(result);
     });
 
     app.listen(port, () => {

@@ -12,7 +12,7 @@ header {
     overflow: hidden;
 }
 
-header > h1 {
+header>h1 {
     font-size: 42px;
     color: #fff;
     text-transform: uppercase;
@@ -56,18 +56,18 @@ header > h1 {
     color: aliceblue;
 }
 
-#words-list > div {
+#words-list>div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 25px;
 }
 
-#words-list > div > span {
+#words-list>div>span {
     font-size: 24px;
 }
 
-#words-list > div > input {
+#words-list>div>input {
     width: 400px;
     font-size: 24px;
     margin-right: 10px;
@@ -92,7 +92,7 @@ button {
     background: border-box;
 }
 
-.check-word{
+#check-word {
     font-size: 20px;
     cursor: pointer;
     color: chocolate;
@@ -105,4 +105,12 @@ button {
     font-size: 20px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     opacity: 0.4;
+}
+
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
 }
