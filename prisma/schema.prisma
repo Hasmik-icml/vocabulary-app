@@ -19,6 +19,7 @@ model Vocabulary {
   armenian      String[]
   transcription String?
   status        Json?     @default("{\"correct\": 0, \"incorrect\": 0}")
+  goal          Int       @default(10)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
