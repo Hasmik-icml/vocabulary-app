@@ -13,14 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Vocabulary {
-  id            Int      @id @default(autoincrement())
-  english       String   @unique
+  id            Int       @id @default(autoincrement())
+  english       String    @unique
   armenian      String[]
   transcription String?
-  status        Json? 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  status        Json?     @default("{\"correct\": 0, \"incorrect\": 0}")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 }
