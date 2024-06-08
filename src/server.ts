@@ -8,7 +8,7 @@ const startServer = async () => {
     console.log("11111");
 
     const app = express();
-    const port = 3000;
+    const port = 4000;
 
     // Middleware
     app.use(express.json());

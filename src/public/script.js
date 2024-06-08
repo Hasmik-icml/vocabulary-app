@@ -20,9 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
                 <span id=${word.id}>${switchLanguage === 'English' ? word.english : word.armenian}</span>
                 <input id=${word.id} type="text" class="translate" data-word="${switchLanguage === 'English' ? word.english : word.armenian}" placeholder="Translate">
+                <span class="speak-icon" data-word="${word.english}">🔊</span>
                 <span class="transcription">${word.transcription}</span>
             </div>
         `).join('');
+
+        document.querySelectorAll('.speak-icon').forEach(element => {
+            console.log(3333, element);
+            element.addEventListener('click', (event) => {
+                console.log("click");
+                const word = event.target.getAttribute('data-word');
+                console.log("word", word)
+                speakWord(word);
+            });
+        });
     }
 
     async function createNewWords() {
@@ -59,6 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('There was a problem with the fetch operation:', error);
         }
 
+    }
+
+    function speakWord(word) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        synth.speak(utterance);
     }
 
     newWordsButton.addEventListener('click', createNewWords);
