@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render words fetched from db
     async function fetchWords() {
         const switchLanguage = switchButton.innerText.split('⇄')[0].trim();
-        console.log(switchLanguage)
         const response = await fetch('/api/words');
         const randomWords = await response.json();
         wordsList.innerHTML = randomWords.map(word => `
@@ -26,11 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
 
         document.querySelectorAll('.speak-icon').forEach(element => {
-            console.log(3333, element);
             element.addEventListener('click', (event) => {
-                console.log("click");
                 const word = event.target.getAttribute('data-word');
-                console.log("word", word)
                 speakWord(word);
             });
         });
@@ -40,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const newWord = newWordInput.value;
         const translation = String(translateInput.value).split(',');
         const transcription = transcriptionInput.value;
-        console.log("transcription", transcription);
 
         if (newWord.trim() === "" || !translation.length) {
             alert("Please enter both a word and its translation.");
@@ -60,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            console.log(result);
 
             // Clear the input fields
             newWordInput.value = "";
@@ -95,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkListObject[wordId] = { translation };
         }
 
-        console.log(checkListObject);
+        // console.log(checkListObject);
         const response = await fetch('/api/check', {
             method: 'POST',
             headers: {
@@ -107,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         result.forEach(element => {
             const wordElement = document.getElementById(element.id);
-            console.log("11", wordElement);
             wordElement.innerHTML = wordElement.innerHTML.replace(" &#x2713;", "").replace(" &#x2715;", "");
 
             if (element.match) {

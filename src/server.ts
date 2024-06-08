@@ -1,12 +1,11 @@
 import express from 'express';
 import { Request, Response } from "express";
 import { PrismaClient, Vocabulary } from '@prisma/client';
+import { updateWordStatus } from './helpers/update-status.helper';
 
 const startServer = async () => {
     const prisma = new PrismaClient();
     // await prisma.$connect();
-    console.log("11111");
-
     const app = express();
     const port = 4000;
 
@@ -17,8 +16,6 @@ const startServer = async () => {
     app.post('/api/create-new-words', async (req: Request, res: Response) => {
         const { newWord, translation, transcription } = req.body;
         const wordsRepo = prisma.vocabulary;
-        console.log('newWord:', newWord);
-        console.log('Type of newWord:', typeof newWord);
 
         const wordCreated: Vocabulary = await wordsRepo.create({
             data: {
@@ -45,7 +42,7 @@ const startServer = async () => {
     app.post('/api/check', async (req: Request, res: Response) => {
         const { checkListObject, translateTo } = req.body;
         const wordsRepo = prisma.vocabulary;
-        console.log("checkListObject", checkListObject, translateTo);
+        // console.log("checkListObject", checkListObject, translateTo);
         const wordIds = Object.keys(checkListObject).map(Number);
 
         const checkList = await wordsRepo.findMany({
@@ -62,6 +59,8 @@ const startServer = async () => {
                 match: translateTo === "Armenian" ? word.armenian.includes(providedTranslation) : word.english === providedTranslation,
             }
         });
+        updateWordStatus(result);
+
         res.json(result);
     });
 
