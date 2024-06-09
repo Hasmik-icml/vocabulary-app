@@ -29,12 +29,14 @@ const startServer = async () => {
 
     // Random words endpoint
     app.get('/api/words', async (req: Request, res: Response) => {
-        const wordsRepo = prisma.vocabulary;
         const limit: number = 10;
-        const words = await wordsRepo.findMany({
-            take: limit,
-        });
-        const randomWords = words.sort(() => 0.5 - Math.random());
+        const randomWords = await prisma.$queryRaw`
+        SELECT * FROM "Vocabulary"
+        WHERE (status->>'incorrect')::int >= (status->>'correct')::int
+        AND (status->>'correct')::int < "goal"
+        ORDER BY RANDOM()
+        LIMIT;
+      `;
         res.json(randomWords);
     });
 
