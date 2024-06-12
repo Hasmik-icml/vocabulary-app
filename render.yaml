@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: vocabulary-backend
+    env: node
+    rootDir: .
+    dockerfilePath: Dockerfile.backend
+    envVars:
+      - key: DATABASE_URL
+        value: your_database_url
+      - key: NODE_ENV
+        value: production
+
+  - type: web
+    name: vocabulary-frontend
+    env: static
+    rootDir: .
+    dockerfilePath: Dockerfile.frontend
+    buildCommand: npm install && npm run build
+    startCommand: nginx -g 'daemon off;'
+    envVars:
+      - key: NODE_ENV
+        value: production
