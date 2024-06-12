@@ -35,8 +35,9 @@ const startServer = async () => {
         WHERE (status->>'incorrect')::int >= (status->>'correct')::int
         AND (status->>'correct')::int < "goal"
         ORDER BY RANDOM()
-        LIMIT;
+        LIMIT ${limit};
       `;
+      console.log("111", randomWords);
         res.json(randomWords);
     });
 
