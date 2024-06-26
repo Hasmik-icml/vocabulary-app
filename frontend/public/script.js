@@ -102,11 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({ checkListObject, translateTo }),
         });
-        
+
         const result = await response.json();
         result.forEach(element => {
             const wordElement = document.getElementById(element.id);
-            wordElement.innerHTML = wordElement.innerHTML.replace(" &#x2713;", "").replace(" &#x2715;", "");
+            wordElement.innerHTML = wordElement.innerHTML.replace("✕", "");
+            wordElement.innerHTML = wordElement.innerHTML.replace("✓", "");
+
+            wordElement.classList.remove("correct", "incorrect");
 
             if (element.match) {
                 wordElement.innerHTML += " &#x2713;";
