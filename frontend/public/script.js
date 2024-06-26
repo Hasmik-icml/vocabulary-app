@@ -9,11 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const translateInput = document.getElementById('translateInput');
     const transcriptionInput = document.getElementById("transcriptionInput");
 
+    const apiUrl = 'http://localhost:3000';
+    console.log("apiUrl", apiUrl);
 
     // Render words fetched from db
     async function fetchWords() {
         const switchLanguage = switchButton.innerText.split('⇄')[0].trim();
-        const response = await fetch('/api/words');
+        const response = await fetch(`http://localhost:3000/api/words`);
         const randomWords = await response.json();
         wordsList.innerHTML = randomWords.map(word => `
             <div>
@@ -34,15 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function createNewWords() {
         const newWord = newWordInput.value;
-        const translation = String(translateInput.value).split(',');
+        const translation = String(translateInput.value).split(',').map(item => item.trim());
         const transcription = transcriptionInput.value;
 
+        console.log("translation", translation)
         if (newWord.trim() === "" || !translation.length) {
             alert("Please enter both a word and its translation.");
             return;
         }
         try {
-            const response = await fetch('http://localhost:3000/api/create-new-words', {
+            console.log("Before fetch call", { newWord, translation, transcription });
+
+            const response = await fetch(`http://localhost:3000/api/create-new-words`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,14 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // console.log(checkListObject);
-        const response = await fetch('/api/check', {
+        const response = await fetch(`http://localhost:3000/api/check`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ checkListObject, translateTo }),
         });
-
+        
         const result = await response.json();
         result.forEach(element => {
             const wordElement = document.getElementById(element.id);
@@ -112,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         console.log("result", result);
+
     });
 
     resetButton.addEventListener('click', () => {

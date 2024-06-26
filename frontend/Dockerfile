@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy the build files
-COPY src/public /usr/share/nginx/html
+COPY /public /usr/share/nginx/html
 
 # Expose the port the app runs on
 EXPOSE 80
